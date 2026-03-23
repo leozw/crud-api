@@ -109,6 +109,12 @@ export class ProductController {
         'PUT /products/:id': 'Update a product (full replacement)',
         'PATCH /products/:id': 'Update a product (partial update)',
         'DELETE /products/:id': 'Delete a product',
+        'GET /uuid': 'Generate a single UUID v4',
+        'GET /uuid/batch': 'Generate multiple UUID v4 values',
+        'GET /id': 'Generate a single opaque ID',
+        'GET /id/batch': 'Generate multiple opaque IDs',
+        'GET /number': 'Generate a single random integer',
+        'GET /number/batch': 'Generate multiple random integers',
       },
       queryParams: {
         '/products': {
@@ -116,8 +122,22 @@ export class ProductController {
           maxPrice: 'Filter by maximum price',
           sortBy: 'Sort by field (name, price, stock, category)',
         },
+        '/uuid/batch': {
+          count: 'Number of UUIDs to generate (optional, default 10, max 1000)',
+        },
+        '/id/batch': {
+          count: 'Number of IDs to generate (optional, default 10, max 1000)',
+        },
+        '/number': {
+          min: 'Minimum integer value (optional, default 0)',
+          max: 'Maximum integer value (optional, default 1000000)',
+        },
+        '/number/batch': {
+          count: 'Number of integers to generate (optional, default 10, max 1000)',
+          min: 'Minimum integer value (optional, default 0)',
+          max: 'Maximum integer value (optional, default 1000000)',
+        },
       },
     });
   }
 }
-

@@ -6,6 +6,7 @@ import { GetProductsByCategoryUseCase } from './application/use-cases/product/Ge
 import { CreateProductUseCase } from './application/use-cases/product/CreateProductUseCase';
 import { UpdateProductUseCase } from './application/use-cases/product/UpdateProductUseCase';
 import { DeleteProductUseCase } from './application/use-cases/product/DeleteProductUseCase';
+import { GeneratorController } from './presentation/controllers/GeneratorController';
 import { ProductController } from './presentation/controllers/ProductController';
 import { ExpressApp } from './presentation/ExpressApp';
 import { GrpcServer } from './infrastructure/grpc/GrpcServer';
@@ -30,9 +31,10 @@ const productController = new ProductController(
   updateProductUseCase,
   deleteProductUseCase
 );
+const generatorController = new GeneratorController();
 
 // Start Express Server
-const expressApp = new ExpressApp(productController);
+const expressApp = new ExpressApp(productController, generatorController);
 expressApp.listen(AppConfig.PORT);
 
 // Start gRPC Server

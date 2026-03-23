@@ -1,5 +1,7 @@
 import express, { Express } from 'express';
+import { GeneratorController } from './controllers/GeneratorController';
 import { ProductController } from './controllers/ProductController';
+import { GeneratorRoutes } from './routes/GeneratorRoutes';
 import { ProductRoutes } from './routes/ProductRoutes';
 import { RequestLogger } from './middlewares/RequestLogger';
 import { NotFoundHandler } from './middlewares/NotFoundHandler';
@@ -8,10 +10,10 @@ import { ErrorHandler } from './middlewares/ErrorHandler';
 export class ExpressApp {
   private app: Express;
 
-  constructor(productController: ProductController) {
+  constructor(productController: ProductController, generatorController: GeneratorController) {
     this.app = express();
     this.setupMiddlewares();
-    this.setupRoutes(productController);
+    this.setupRoutes(productController, generatorController);
     this.setupErrorHandling();
   }
 
@@ -20,13 +22,17 @@ export class ExpressApp {
     this.app.use(RequestLogger.middleware);
   }
 
-  private setupRoutes(productController: ProductController): void {
+  private setupRoutes(productController: ProductController, generatorController: GeneratorController): void {
     // Root route
     this.app.get('/', (req, res) => productController.getApiInfo(req, res));
 
     // Product routes
     const productRoutes = new ProductRoutes(productController);
     this.app.use('/products', productRoutes.getRouter());
+
+    // Generator routes
+    const generatorRoutes = new GeneratorRoutes(generatorController);
+    this.app.use(generatorRoutes.getRouter());
   }
 
   private setupErrorHandling(): void {

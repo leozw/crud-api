@@ -23,6 +23,7 @@ This API provides a complete CRUD (Create, Read, Update, Delete) system for prod
 ### Features
 
 - ✅ Full CRUD operations for products
+- ✅ UUID, ID, and number generation endpoints for synthetic checks
 - ✅ RESTful API with Express
 - ✅ gRPC services (Health & Echo)
 - ✅ Request filtering and sorting
@@ -177,6 +178,139 @@ Retrieves a specific product by ID.
 {
   "error": "Not found",
   "message": "Product with ID 999 not found"
+}
+```
+
+#### `GET /uuid`
+
+Generates a single UUID v4.
+
+**Response:**
+```json
+{
+  "uuid": "8a2f8f8d-4ce0-47cf-b5d8-52fa765f0f2f",
+  "version": 4
+}
+```
+
+#### `GET /uuid/batch`
+
+Generates multiple UUID v4 values in one request.
+
+**Query Parameters:**
+- `count` (number, optional): Number of UUIDs to generate. Default is `10`, maximum is `1000`.
+
+**Example:**
+```bash
+GET /uuid/batch?count=3
+```
+
+**Response:**
+```json
+{
+  "total": 3,
+  "uuids": [
+    "8a2f8f8d-4ce0-47cf-b5d8-52fa765f0f2f",
+    "52a39941-6c98-4cf8-bf5b-6a1c21f5f9a0",
+    "c7ea04d2-1eb0-47f4-8d8d-761b3795fb98"
+  ],
+  "version": 4
+}
+```
+
+**Validation Error (400):**
+```json
+{
+  "error": "Validation failed",
+  "details": [
+    "count must be an integer between 1 and 1000"
+  ]
+}
+```
+
+#### `GET /id`
+
+Generates a single opaque ID string.
+
+**Response:**
+```json
+{
+  "id": "id_f84ac0e95e6b402a"
+}
+```
+
+#### `GET /id/batch`
+
+Generates multiple opaque IDs in one request.
+
+**Query Parameters:**
+- `count` (number, optional): Number of IDs to generate. Default is `10`, maximum is `1000`.
+
+**Response:**
+```json
+{
+  "total": 3,
+  "ids": [
+    "id_f84ac0e95e6b402a",
+    "id_3fe19f7f4fc8406b",
+    "id_0d9fe8e1e5c54f2a"
+  ]
+}
+```
+
+#### `GET /number`
+
+Generates a single random integer.
+
+**Query Parameters:**
+- `min` (number, optional): Minimum integer value. Default is `0`.
+- `max` (number, optional): Maximum integer value. Default is `1000000`.
+
+**Example:**
+```bash
+GET /number?min=100&max=999
+```
+
+**Response:**
+```json
+{
+  "number": 482,
+  "min": 100,
+  "max": 999
+}
+```
+
+#### `GET /number/batch`
+
+Generates multiple random integers in one request.
+
+**Query Parameters:**
+- `count` (number, optional): Number of integers to generate. Default is `10`, maximum is `1000`.
+- `min` (number, optional): Minimum integer value. Default is `0`.
+- `max` (number, optional): Maximum integer value. Default is `1000000`.
+
+**Example:**
+```bash
+GET /number/batch?count=3&min=10&max=20
+```
+
+**Response:**
+```json
+{
+  "total": 3,
+  "numbers": [14, 11, 19],
+  "min": 10,
+  "max": 20
+}
+```
+
+**Validation Error (400):**
+```json
+{
+  "error": "Validation failed",
+  "details": [
+    "min must be less than or equal to max"
+  ]
 }
 ```
 

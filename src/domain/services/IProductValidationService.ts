@@ -10,3 +10,5 @@ export interface IProductValidationService {
   validateUpdate(data: UpdateProductDto): ValidationError[];
 }
 
+
+

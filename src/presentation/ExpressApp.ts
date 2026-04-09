@@ -33,6 +33,22 @@ export class ExpressApp {
     // Generator routes
     const generatorRoutes = new GeneratorRoutes(generatorController);
     this.app.use(generatorRoutes.getRouter());
+
+    // Webhook route for testing (like webhook.site)
+    this.app.all('/webhook', (req, res) => {
+      console.log('\n--- 🪝 WEBHOOK PAYLOAD RECEIVED ---');
+      console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+      console.log('Headers:', JSON.stringify(req.headers, null, 2));
+      console.log('Query:', JSON.stringify(req.query, null, 2));
+      console.log('Body:', JSON.stringify(req.body, null, 2));
+      console.log('------------------------------------\n');
+      
+      res.status(200).json({
+        message: 'Webhook received successfully',
+        method: req.method,
+        timestamp: new Date().toISOString()
+      });
+    });
   }
 
   private setupErrorHandling(): void {
